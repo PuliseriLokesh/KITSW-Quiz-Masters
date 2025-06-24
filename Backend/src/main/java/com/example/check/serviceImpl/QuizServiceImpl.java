@@ -1,9 +1,9 @@
 package com.example.check.serviceImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import jakarta.transaction.Transactional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,8 @@ import com.example.check.repository.QuestionRepository;
 import com.example.check.repository.QuizRepository;
 import com.example.check.repository.ScoreRepository;
 import com.example.check.service.QuizService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class QuizServiceImpl implements QuizService {
@@ -104,13 +106,46 @@ public class QuizServiceImpl implements QuizService {
         if (questionOptional.isPresent()) {
             Question existingQuestion = questionOptional.get();
 
-            // Update all fields
+            // Update common fields
             existingQuestion.setQuestion(updatedQuestion.getQuestion());
-            existingQuestion.setOption1(updatedQuestion.getOption1());
-            existingQuestion.setOption2(updatedQuestion.getOption2());
-            existingQuestion.setOption3(updatedQuestion.getOption3());
-            existingQuestion.setOption4(updatedQuestion.getOption4());
-            existingQuestion.setAnswer(updatedQuestion.getAnswer());
+            existingQuestion.setQuestionType(updatedQuestion.getQuestionType());
+
+            // Update type-specific fields
+            switch (updatedQuestion.getQuestionType()) {
+                case "MCQ":
+                    existingQuestion.setOption1(updatedQuestion.getOption1());
+                    existingQuestion.setOption2(updatedQuestion.getOption2());
+                    existingQuestion.setOption3(updatedQuestion.getOption3());
+                    existingQuestion.setOption4(updatedQuestion.getOption4());
+                    existingQuestion.setAnswer(updatedQuestion.getAnswer());
+                    break;
+
+                case "TRUE_FALSE":
+                    existingQuestion.setTrueFalseAnswer(updatedQuestion.getTrueFalseAnswer());
+                    existingQuestion.setAnswer(updatedQuestion.getTrueFalseAnswer().toString());
+                    break;
+
+                case "FILL_BLANK":
+                    existingQuestion.setFillBlankAnswer(updatedQuestion.getFillBlankAnswer());
+                    existingQuestion.setAnswer(updatedQuestion.getFillBlankAnswer());
+                    break;
+
+                case "MATCHING":
+                    existingQuestion.setLeftOptions(updatedQuestion.getLeftOptions());
+                    existingQuestion.setRightOptions(updatedQuestion.getRightOptions());
+                    existingQuestion.setCorrectMatches(updatedQuestion.getCorrectMatches());
+                    existingQuestion.setAnswer(String.join(",", updatedQuestion.getCorrectMatches()));
+                    break;
+
+                case "CODING":
+                    existingQuestion.setCodingQuestion(updatedQuestion.getCodingQuestion());
+                    existingQuestion.setTestCases(updatedQuestion.getTestCases());
+                    existingQuestion.setExpectedOutput(updatedQuestion.getExpectedOutput());
+                    existingQuestion.setProgrammingLanguage(updatedQuestion.getProgrammingLanguage());
+                    existingQuestion.setStarterCode(updatedQuestion.getStarterCode());
+                    existingQuestion.setAnswer(updatedQuestion.getExpectedOutput());
+                    break;
+            }
 
             // Save the updated question
             questionRepository.save(existingQuestion);
@@ -187,5 +222,36 @@ public class QuizServiceImpl implements QuizService {
         }
         scoreRepository.deleteByQuizname(quizName);
         return "All scores for " + quizName + " deleted successfully.";
+    }
+
+    @Override
+    public List<Quiz> getAvailableQuizzes() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Quiz> allQuizzes = quizRepository.findAll();
+        
+        return allQuizzes.stream()
+                .filter(quiz -> {
+                    // If quiz is not scheduled, it's always available
+                    if (!quiz.getIs_scheduled()) {
+                        return true;
+                    }
+                    
+                    // If quiz is scheduled, check if current time is within the schedule window
+                    if (quiz.getScheduledStartDateTime() != null && quiz.getScheduledEndDateTime() != null) {
+                        return now.isAfter(quiz.getScheduledStartDateTime()) && 
+                               now.isBefore(quiz.getScheduledEndDateTime());
+                    }
+                    
+                    // If scheduling data is incomplete, treat as unavailable
+                    return false;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Quiz> getAllQuizzesForDisplay() {
+        // Return all quizzes for display purposes
+        // The frontend will handle the availability logic
+        return quizRepository.findAll();
     }
 }

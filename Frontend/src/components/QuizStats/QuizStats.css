@@ -1,98 +1,203 @@
+.quiz-stats-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    padding: 2rem;
+}
+
 .heading {
-    padding: 40px;
     text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.heading h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .notice {
-    font-style: italic;
-    color: #555;
-    text-align: center;
-}
-
-.quizzy, .failed {
-    margin: 20px 9px;
-    text-align: center;
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-}
-
-.quizzy h2, .failed h3 {
-    font-size: 1.8rem; 
-    margin-bottom: 20px;
-}
-
-.candidate-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    width: 100%; 
-}
-
-.candidate-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 250px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: center;
-}
-
-.candidate-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.candidate-rank {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.candidate-username, .candidate-marks {
-    font-size: 1.1rem;
-    color: #333;
-}
-
-.no-results {
-    text-align: center;
-    margin-top: 20px;
-    color: #ff4444;
-    font-size: 1.5rem;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
 }
 
 .delete-scores-btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: white;
     background-color: #dc3545;
+    color: white;
     border: none;
+    padding: 0.8rem 1.5rem;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .delete-scores-btn:hover {
     background-color: #c82333;
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.delete-scores-btn:active {
-    background-color: #bd2130;
-    transform: translateY(0);
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 0 2rem;
 }
 
 .chart-field {
-    width: 60%; 
-    max-width: 800px; 
-    margin: 20px auto; 
-    height: 300px; 
-    padding: 20px;
-    background-color: #fff;
+    background: white;
+    padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quizzy, .failed {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.quizzy h2, .failed h3 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    text-align: left;
+}
+
+.candidate-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.candidate-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.candidate-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.candidate-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.candidate-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.candidate-card {
+    min-width: 250px;
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+    flex: 0 0 auto;
+}
+
+.candidate-card.passed {
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 100%);
+    border-left: 4px solid #28a745;
+}
+
+.candidate-card.failed {
+    background: linear-gradient(135deg, #fff8f8 0%, #fbe9e9 100%);
+    border-left: 4px solid #dc3545;
+}
+
+.candidate-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-rank {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.candidate-username {
+    color: #34495e;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.candidate-marks {
+    color: #666;
+    font-size: 1rem;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+@media (max-width: 1200px) {
+    .charts-container {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+
+    .chart-field {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .quiz-stats-wrapper {
+        padding: 1rem;
+    }
+
+    .heading h1 {
+        font-size: 2rem;
+    }
+
+    .charts-container {
+        padding: 0;
+    }
+
+    .chart-field {
+        height: 250px;
+        padding: 1rem;
+    }
+
+    .candidate-card {
+        min-width: 200px;
+        padding: 1rem;
+    }
 }

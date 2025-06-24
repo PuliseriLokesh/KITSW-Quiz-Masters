@@ -16,6 +16,7 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 
@@ -38,8 +39,8 @@ public class JwtUtils {
 
   @PostConstruct
   protected void init() {
-    // Generate a secure key using HS256 algorithm
-    this.key = Jwts.SIG.HS256.key().build();
+    // Use the configured secret to create a consistent key
+    this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
     this.jwtParser = Jwts.parser().setSigningKey(key).build();
   }
 

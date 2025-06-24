@@ -1,8 +1,89 @@
 .dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 20px;
-  max-width: 1200px; 
-  margin: 0 auto; /* Center the dashboard */
-  font-family: Arial, sans-serif;
+}
+
+.profile-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  height: 100%;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.stats-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Chart styles */
+.recharts-wrapper {
+  margin: 0 auto;
+}
+
+.recharts-default-tooltip {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  padding: 10px !important;
+}
+
+/* Table styles */
+.MuiTableContainer-root {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.MuiTableHead-root {
+  background-color: #f5f7fa !important;
+}
+
+.MuiTableCell-root {
+  padding: 16px !important;
+}
+
+/* Custom scrollbar */
+.dashboard-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dashboard-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.dashboard-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .profile-card .MuiCardContent-root,
+  .stats-card .MuiCardContent-root {
+    padding: 16px !important;
+  }
 }
 
 .profile-section {

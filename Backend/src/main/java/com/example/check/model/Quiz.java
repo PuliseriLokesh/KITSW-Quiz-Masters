@@ -1,8 +1,10 @@
 package com.example.check.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -32,6 +34,17 @@ public class Quiz {
     @Column(nullable = false)
     private Integer timeLimit; // Time limit in minutes
 
+    @Column(nullable = false)
+    private Boolean is_scheduled = false; // Default value is false
+
+    @Column(name = "scheduled_start_datetime")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime scheduledStartDateTime;
+
+    @Column(name = "scheduled_end_datetime")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime scheduledEndDateTime;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
@@ -44,6 +57,7 @@ public class Quiz {
         this.username = username;
         this.questions = questions != null ? questions : new ArrayList<>();
         this.timeLimit = timeLimit;
+        this.is_scheduled = false;
     }
 
     public Long getId() {
@@ -76,6 +90,30 @@ public class Quiz {
 
     public void setTimeLimit(Integer timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    public Boolean getIs_scheduled() {
+        return is_scheduled;
+    }
+
+    public void setIs_scheduled(Boolean is_scheduled) {
+        this.is_scheduled = is_scheduled;
+    }
+
+    public LocalDateTime getScheduledStartDateTime() {
+        return scheduledStartDateTime;
+    }
+
+    public void setScheduledStartDateTime(LocalDateTime scheduledStartDateTime) {
+        this.scheduledStartDateTime = scheduledStartDateTime;
+    }
+
+    public LocalDateTime getScheduledEndDateTime() {
+        return scheduledEndDateTime;
+    }
+
+    public void setScheduledEndDateTime(LocalDateTime scheduledEndDateTime) {
+        this.scheduledEndDateTime = scheduledEndDateTime;
     }
 
     public List<Question> getQuestions() {

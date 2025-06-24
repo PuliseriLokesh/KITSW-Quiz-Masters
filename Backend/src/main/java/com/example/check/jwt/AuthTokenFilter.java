@@ -35,8 +35,12 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	      throws ServletException, IOException {
 	    try {
 	      String jwt = parseJwt(request);
+	      System.out.println("JWT Filter - Request URI: " + request.getRequestURI());
+	      System.out.println("JWT Filter - JWT token: " + (jwt != null ? jwt.substring(0, Math.min(20, jwt.length())) + "..." : "null"));
+	      
 	      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 	        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+	        System.out.println("JWT Filter - Username from token: " + username);
 
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 	        UsernamePasswordAuthenticationToken authentication =
@@ -47,9 +51,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
+	        System.out.println("JWT Filter - Authentication set successfully for user: " + username);
+	      } else {
+	        System.out.println("JWT Filter - JWT validation failed or token is null");
 	      }
 	    } catch (Exception e) {
 	      logger.error("Cannot set user authentication: {}", e);
+	      System.err.println("JWT Filter - Error: " + e.getMessage());
 	    }
 
 	    filterChain.doFilter(request, response);
@@ -57,11 +65,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 	  private String parseJwt(HttpServletRequest request) {
 	    String headerAuth = request.getHeader("Authorization");
+	    System.out.println("JWT Filter - Authorization header: " + headerAuth);
 
 	    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-	      return headerAuth.substring(7, headerAuth.length());
+	      String token = headerAuth.substring(7, headerAuth.length());
+	      System.out.println("JWT Filter - Extracted token length: " + token.length());
+	      return token;
 	    }
 
+	    System.out.println("JWT Filter - No valid Authorization header found");
 	    return null;
 	  }
 	}

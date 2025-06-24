@@ -1,191 +1,194 @@
 import axios from "axios";
-import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from "chart.js";
-import { useEffect, useState } from "react";
-import { Bar, Pie } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
-import gif from './celebration.gif';
 import "./Score.css";
-
-// Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
+import celebrationGif from './celebration.gif';
 
 function Score() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { score, heading_of_quiz, id, totalQuestions, attemptedQuestions, answers } = location.state || {};
-  const [showSolutions, setShowSolutions] = useState(false);
-  const [solutions, setSolutions] = useState([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const score = location.state?.score || 0;
+    const totalQuestions = location.state?.totalQuestions || 0;
+    const heading = location.state?.heading_of_quiz || "Quiz";
+    const attemptedQuestions = location.state?.attemptedQuestions || 0;
+    const answers = location.state?.answers || [];
+    const quizId = location.state?.id;
+    const [showCelebration, setShowCelebration] = useState(true);
+    const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    const saveScore = async () => {
-      const user = JSON.parse(localStorage.getItem("user")) || {};
-      try {
-        await axios.post(
-          "http://localhost:7018/api/quiz/addScore",
-          {
-            username: user.username,
-            quizId: id,
-            quizname: heading_of_quiz,
-            score: score,
-            answers: answers // Include answers in the score submission
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
-          }
-        );
-        console.log("Score saved successfully");
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
+    useEffect(() => {
+        // Prevent horizontal navigation gestures
+        const preventHorizontalNavigation = (e) => {
+            // Check if the gesture is horizontal
+            if (e.type === 'wheel') {
+                if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                    e.preventDefault();
+                }
+            } else if (e.type === 'touchmove') {
+                const touch = e.touches[0];
+                const startX = touch.clientX;
+                const startY = touch.clientY;
+                
+                if (Math.abs(startX) > Math.abs(startY)) {
+                    e.preventDefault();
+                }
+            }
+        };
+
+        // Add event listeners for horizontal navigation gestures
+        document.addEventListener('wheel', preventHorizontalNavigation, { passive: false });
+        document.addEventListener('touchmove', preventHorizontalNavigation, { passive: false });
+
+        // Replace history state
+        window.history.replaceState(null, '', '/score');
+        window.history.pushState(null, '', '/score');
+
+        // Handle popstate event
+        const handlePopState = (e) => {
+            e.preventDefault();
+            window.history.pushState(null, '', '/score');
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            // Clean up event listeners
+            document.removeEventListener('wheel', preventHorizontalNavigation);
+            document.removeEventListener('touchmove', preventHorizontalNavigation);
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
+
+    useEffect(() => {
+        const submitScore = async () => {
+            try {
+                await axios.post(
+                    "http://localhost:7018/api/quiz/addScore",
+                    {
+                        username: user.username,
+                        quizId: quizId,
+                        quizname: heading,
+                        score: score
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user.accessToken}`,
+                        },
+                    }
+                );
+                console.log("Score submitted successfully");
+            } catch (error) {
+                console.error("Error submitting score:", error);
+            }
+        };
+
+        if (quizId && user) {
+            submitScore();
+        }
+    }, [quizId, user, score, heading]);
+
+    useEffect(() => {
+        if (score / totalQuestions >= 0.6) {
+            const timer = setTimeout(() => {
+                setShowCelebration(false);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [score, totalQuestions]);
+
+    const handleBackToDashboard = () => {
+        // Clear all history and navigate to dashboard
+        window.history.pushState(null, '', '/dashboard');
+        navigate("/dashboard", { replace: true });
     };
 
-    if (score !== undefined) {
-      saveScore();
-    }
-  }, [score, id, heading_of_quiz, answers]);
+    const percentage = (score / totalQuestions) * 100;
+    const hasPassed = percentage >= 60;
+    const isPerfectScore = percentage === 100;
 
-  // Bar chart data
-  const barData = {
-    labels: ["Score", "Total Questions"],
-    datasets: [
-      {
-        label: "Quiz Performance",
-        data: [score || 0, totalQuestions || 0],
-        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 99, 132, 0.6)"],
-        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
+    const getScoreColor = () => {
+        if (percentage >= 80) return "#28a745";
+        if (percentage >= 60) return "#ffc107";
+        return "#dc3545";
+    };
 
-  // Pie chart data
-  const pieData = {
-    labels: ["Correct Answers", "Incorrect Answers"],
-    datasets: [
-      {
-        label: "Quiz Breakdown",
-        data: [score || 0, (totalQuestions || 0) - (score || 0)],
-        backgroundColor: ["rgba(54, 162, 235, 0.6)", "rgba(255, 206, 86, 0.6)"],
-        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
+    const getScoreMessage = () => {
+        if (isPerfectScore) return "🏆 Perfect Score! You're a Quiz Master! 🏆";
+        if (percentage >= 80) return "🎉 Excellent! You've mastered this quiz! 🎉";
+        if (percentage >= 60) return "🌟 Good job! Keep practicing to improve. 🌟";
+        return "💪 Keep practicing! You can do better next time. 💪";
+    };
 
-  // Determine if the user passed (e.g., 50% or higher)
-  const passingScore = (totalQuestions || 0) * 0.5;
-  const hasPassed = (score || 0) >= passingScore;
-  const isPerfectScore = (score || 0) === (totalQuestions || 0);
+    return (
+        <div className="score-page">
+            <Navbar />
+            <div className={`score-container ${hasPassed && showCelebration ? 'with-celebration' : ''}`}>
+                {hasPassed && showCelebration && (
+                    <div className="celebration-background">
+                        <img src={celebrationGif} alt="Celebration" className="celebration-gif" />
+                    </div>
+                )}
+                <div className="score-card">
+                    <h1 className="score-title">Quiz Results</h1>
+                    <h2 className="quiz-name">{heading}</h2>
+                    
+                    <div className="score-details">
+                        <div className="score-circle" style={{ borderColor: getScoreColor() }}>
+                            <span className="score-percentage">{percentage.toFixed(1)}%</span>
+                        </div>
+                        
+                        <div className="score-stats">
+                            <div className="stat-item">
+                                <span className="stat-label">Correct Answers:</span>
+                                <span className="stat-value">{score}</span>
+                            </div>
+                            <div className="stat-item">
+                                <span className="stat-label">Total Questions:</span>
+                                <span className="stat-value">{totalQuestions}</span>
+                            </div>
+                            <div className="stat-item">
+                                <span className="stat-label">Questions Attempted:</span>
+                                <span className="stat-value">{attemptedQuestions}</span>
+                            </div>
+                        </div>
+                    </div>
 
-  const handleViewSolutions = () => {
-    setShowSolutions(true);
-    setSolutions(answers || []);
-  };
+                    <div className="score-message" style={{ color: getScoreColor() }}>
+                        {getScoreMessage()}
+                    </div>
 
-  return (
-    <>
-      <Navbar />
-      <div className="score-container">
-        <h1>Quiz Completed!</h1>
-        <h2>Quiz: {heading_of_quiz || "Unknown Quiz"}</h2>
-        <h3>Your Score: {score || 0} / {totalQuestions || 0}</h3>
-        <p>Questions Attempted: {attemptedQuestions || 0} / {totalQuestions || 0}</p>
+                    <div className="answers-summary">
+                        <h3>Question Summary</h3>
+                        <div className="answers-list">
+                            {answers.map((answer, index) => (
+                                <div key={index} className={`answer-item ${answer.isCorrect ? 'correct' : 'incorrect'}`}>
+                                    <div className="question-number">Q{index + 1}</div>
+                                    <div className="answer-details">
+                                        <div className="question-text">{answer.question}</div>
+                                        <div className="answer-text">
+                                            <span className="label">Your Answer:</span> {answer.userAnswer}
+                                        </div>
+                                        {!answer.isCorrect && (
+                                            <div className="correct-answer">
+                                                <span className="label">Correct Answer:</span> {answer.correctAnswer}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
-        {/* Celebratory Message */}
-        {isPerfectScore ? (
-          <div className="celebration-message perfect">
-            <h2>🏆 Congratulations, Champion! 🏆</h2>
-            <p>You achieved a perfect score! You're a quiz master!</p>
-            {/* Celebration GIF */}
-            <img src={gif} alt="Celebration" className="celebration-gif" />
-          </div>
-        ) : hasPassed ? (
-          <div className="celebration-message passed">
-            <h2>🎉 Well Done! 🎉</h2>
-            <p>You passed the quiz! Great job!</p>
-          </div>
-        ) : (
-          <div className="celebration-message failed">
-            <h2>🍀 Better Luck Next Time! 🍀</h2>
-            <p>You didn't pass this time, but keep practicing!</p>
-          </div>
-        )}
-
-        {/* Bar Graph */}
-        <div className="chart-container">
-          <h3>Performance Overview (Bar Graph)</h3>
-          <Bar
-            data={barData}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  max: totalQuestions || 10,
-                  title: {
-                    display: true,
-                    text: "Score",
-                  },
-                },
-              },
-            }}
-          />
+                    <div className="score-actions">
+                        <button className="dashboard-button" onClick={handleBackToDashboard}>
+                            Back to Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {/* Pie Chart */}
-        <div className="chart-container">
-          <h3>Score Breakdown (Pie Chart)</h3>
-          <Pie
-            data={pieData}
-            options={{
-              plugins: {
-                legend: {
-                  position: "top",
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (context) => {
-                      const label = context.label || "";
-                      const value = context.raw || 0;
-                      return `${label}: ${value}`;
-                    },
-                  },
-                },
-              },
-            }}
-          />
-        </div>
-
-        <div className="button-container">
-          <button className="view-solutions-button" onClick={handleViewSolutions}>
-            View Solutions
-          </button>
-          <button className="back-button" onClick={() => navigate("/dashboard")}>
-            Back to Dashboard
-          </button>
-        </div>
-
-        {showSolutions && (
-          <div className="solutions-container">
-            <h2>Quiz Solutions</h2>
-            {solutions.map((solution, index) => (
-              <div key={index} className="solution-item">
-                <h3>Question {index + 1}</h3>
-                <p className="question-text">{solution.question}</p>
-                <p className="your-answer">Your Answer: {solution.userAnswer}</p>
-                <p className="correct-answer">Correct Answer: {solution.correctAnswer}</p>
-                <p className={`answer-status ${solution.isCorrect ? 'correct' : 'incorrect'}`}>
-                  {solution.isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
+    );
 }
 
 export default Score;

@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import com.example.check.jwt.AuthEntryPointJwt;
 import com.example.check.jwt.AuthTokenFilter;
@@ -77,8 +75,15 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/test/**").permitAll()
-                .requestMatchers("/api/Quiz/createQuiz", "/api/Quiz/AddAQuestion/**", 
-                               "/api/Quiz/RemoveAQuestion/**", "/api/Quiz/deleteAQuiz/**").hasRole("ADMIN")
+                .requestMatchers("/api/reports/submit").permitAll()
+                .requestMatchers("/api/contact/submit").permitAll()
+                .requestMatchers("/api/quiz/getAllQuizzes").permitAll()
+                .requestMatchers("/api/quiz/getAvailableQuizzes").permitAll()
+                .requestMatchers("/api/quiz/getAllQuizzesForDisplay").permitAll()
+                .requestMatchers("/api/notifications/**").authenticated()
+                .requestMatchers("/api/admin/notifications/**").hasRole("ADMIN")
+                .requestMatchers("/api/quiz/createQuiz", "/api/quiz/AddAQuestion/**", 
+                               "/api/quiz/removeQuestion/**", "/api/quiz/deleteQuiz/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             );
 

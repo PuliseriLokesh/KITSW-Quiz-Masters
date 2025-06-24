@@ -17,6 +17,20 @@ public interface QuizService {
     List<Quiz> getAllQuizzes();
 
     /**
+     * Retrieves only available quizzes (not scheduled or within scheduled time window).
+     *
+     * @return a list of available quizzes
+     */
+    List<Quiz> getAvailableQuizzes();
+
+    /**
+     * Retrieves all quizzes with their availability status for display.
+     *
+     * @return a list of all quizzes with scheduling information
+     */
+    List<Quiz> getAllQuizzesForDisplay();
+
+    /**
      * Creates a new quiz and associates it with the given username.
      *
      * @param quiz the quiz to create

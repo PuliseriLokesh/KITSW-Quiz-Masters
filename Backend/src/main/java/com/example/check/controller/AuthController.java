@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +31,8 @@ import com.example.check.request_pojo.SignupRequest;
 import com.example.check.response_pojo.JwtResponse;
 import com.example.check.response_pojo.MessageResponse;
 import com.example.check.serviceImpl.UserDetailsImpl;
+
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
@@ -66,6 +66,7 @@ public class AuthController {
     List<String> roles = userDetails.getAuthorities().stream()
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
+        
 
     return ResponseEntity.ok(new JwtResponse(jwt, 
                          userDetails.getId(), 

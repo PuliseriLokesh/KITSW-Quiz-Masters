@@ -1,9 +1,183 @@
 .terms-and-conditions {
-    padding: 20px;
-    background-color: #e9ecef;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-    margin-left: 15%;
-    margin-right: 15%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    padding: 40px 20px;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.terms-and-conditions h1 {
+    text-align: center;
+    color: #000;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    
+    
+    
+    
+    animation: fadeInDown 1s ease-out;
+}
+
+.terms-and-conditions h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 30px 0 20px 0;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.terms-and-conditions h2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.terms-and-conditions h2:hover::before {
+    left: 100%;
+}
+
+.terms-and-conditions p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: justify;
+    font-weight: 400;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.terms-and-conditions p:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-left-color: #2980b9;
+}
+
+.terms-and-conditions ul {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.terms-and-conditions li {
+    background: #ffffff;
+    margin: 12px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.terms-and-conditions li::before {
+    content: '📋';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+.terms-and-conditions li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-left-color: #2980b9;
+}
+
+.terms-and-conditions li strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.terms-and-conditions > div {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .terms-and-conditions {
+        padding: 20px 10px;
+    }
+    
+    .terms-and-conditions h1 {
+        font-size: 2.5rem;
+    }
+    
+    .terms-and-conditions > div {
+        padding: 25px;
+        margin: 0 10px;
+    }
+    
+    .terms-and-conditions h2 {
+        font-size: 1.6rem;
+        padding: 12px 15px;
+    }
+    
+    .terms-and-conditions p {
+        font-size: 1rem;
+        padding: 15px;
+    }
+    
+    .terms-and-conditions ul {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .terms-and-conditions h1 {
+        font-size: 2rem;
+    }
+    
+    .terms-and-conditions > div {
+        padding: 20px;
+    }
+    
+    .terms-and-conditions h2 {
+        font-size: 1.4rem;
+        padding: 10px 12px;
+    }
+    
+    .terms-and-conditions li {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+} 

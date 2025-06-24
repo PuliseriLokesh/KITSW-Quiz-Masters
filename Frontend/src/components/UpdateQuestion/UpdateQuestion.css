@@ -1,0 +1,57 @@
+.update-question-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.update-question-page .MuiPaper-root {
+  transition: all 0.3s ease;
+}
+
+.update-question-page .MuiPaper-root:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.update-question-page .MuiTextField-root,
+.update-question-page .MuiFormControl-root {
+  margin-bottom: 16px;
+}
+
+.update-question-page .MuiButton-root {
+  text-transform: none;
+  font-weight: 500;
+}
+
+.update-question-page .MuiTypography-h4 {
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 24px;
+}
+
+.update-question-page .MuiInputLabel-root {
+  font-weight: 500;
+}
+
+.update-question-page .MuiOutlinedInput-root {
+  background-color: white;
+}
+
+.update-question-page .MuiSelect-select {
+  background-color: white;
+}
+
+.update-question-page .MuiButton-contained {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-question-page .MuiButton-contained:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.update-question-page .MuiButton-outlined {
+  border-width: 2px;
+}
+
+.update-question-page .MuiButton-outlined:hover {
+  border-width: 2px;
+} 

@@ -1,27 +1,38 @@
-import { useNavigate } from 'react-router-dom';
-import '../Navbar/AdminNavbar.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./AdminNavbar.css";
 
-function Navbar() {
+function AdminNavbar() {
     const history = useNavigate();
 
-    const Logout = () => {
-        try {
-            console.log(localStorage.getItem("user"));
-            localStorage.removeItem("user");
-            history("/");
-        } catch (error) {
-            console.log(error);
-        }
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        history("/");
+    }
+
+    const handleDashboardClick = () => {
+        history("/Admin-page");
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <button><a className="navbar-brand" href="/Admin-page">Welcome to KITS Quiz Masters Admin Panel</a></button>
-            <button className="btn btn-link" onClick={Logout} >
-                Log Out
-            </button>
+        <nav className="admin-top-nav">
+            <div className="admin-nav-content">
+                <div className="admin-logo-section">
+                    <button className="admin-dashboard-btn" onClick={handleDashboardClick}>
+                        <h2>KITS Quiz Masters Admin Panel</h2>
+                    </button>
+                </div>
+                <div className="admin-auth-buttons">
+                    <button 
+                        className="admin-logout-btn"
+                        onClick={handleLogout}
+                    >
+                        Log Out
+                    </button>
+                </div>
+            </div>
         </nav>
     );
 }
 
-export default Navbar;
+export default AdminNavbar; 

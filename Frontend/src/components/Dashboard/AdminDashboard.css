@@ -1,5 +1,159 @@
 /* AdminDashboard.css */
 
+.dashboard-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    padding: 20px 0;
+}
+
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stats-card {
+    border-radius: 16px !important;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.activity-card {
+    border-radius: 16px !important;
+    transition: all 0.3s ease;
+}
+
+.activity-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Custom scrollbar for activity list */
+.activity-card .MuiList-root {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.activity-card .MuiList-root::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activity-card .MuiList-root::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activity-card .MuiList-root::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+/* Search results dropdown */
+.MuiPaper-root .MuiList-root {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+
+    .MuiContainer-root {
+        padding: 0 !important;
+    }
+
+    .MuiPaper-root {
+        padding: 16px !important;
+    }
+}
+
+/* Animation for loading state */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.MuiCircularProgress-root {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Chip styles */
+.MuiChip-root {
+    border-radius: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* Button hover effects */
+.MuiButton-root {
+    transition: all 0.3s ease !important;
+}
+
+.MuiButton-root:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Icon button styles */
+.MuiIconButton-root {
+    transition: all 0.3s ease !important;
+}
+
+.MuiIconButton-root:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Typography styles */
+.MuiTypography-h3 {
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.MuiTypography-h5 {
+    font-weight: 600 !important;
+    letter-spacing: -0.25px !important;
+}
+
+/* Card content spacing */
+.MuiCardContent-root {
+    padding: 24px !important;
+}
+
+/* List item styles */
+.MuiListItem-root {
+    padding: 12px 16px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.MuiListItem-root:hover {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Divider styles */
+.MuiDivider-root {
+    margin: 8px 0 !important;
+    opacity: 0.1 !important;
+}
+
 .Dashboard {
     background-color: #f5f5f5;
     min-height: 100vh;

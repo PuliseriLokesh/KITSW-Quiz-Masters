@@ -1,0 +1,56 @@
+.modify-quiz-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.modify-quiz-page .MuiPaper-root {
+  transition: all 0.3s ease;
+}
+
+.modify-quiz-page .MuiPaper-root:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modify-quiz-page .MuiListItem-root {
+  transition: background-color 0.2s ease;
+}
+
+.modify-quiz-page .MuiListItem-root:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.modify-quiz-page .MuiIconButton-root {
+  transition: transform 0.2s ease;
+}
+
+.modify-quiz-page .MuiIconButton-root:hover {
+  transform: scale(1.1);
+}
+
+.modify-quiz-page .MuiChip-root {
+  margin-right: 8px;
+}
+
+.modify-quiz-page .MuiDivider-root {
+  margin: 8px 0;
+}
+
+.modify-quiz-page .MuiButton-root {
+  text-transform: none;
+  font-weight: 500;
+}
+
+.modify-quiz-page .MuiTypography-h4 {
+  font-weight: 600;
+  color: #1a237e;
+}
+
+.modify-quiz-page .MuiTypography-h6 {
+  font-weight: 500;
+  color: #333;
+}
+
+.modify-quiz-page .MuiTypography-body2 {
+  color: #666;
+} 

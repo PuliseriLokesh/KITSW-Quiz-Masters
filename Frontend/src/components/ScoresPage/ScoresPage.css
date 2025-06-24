@@ -1,33 +1,89 @@
 .scorepage-container {
-  max-width: 1200px;
+  padding: 40px 80px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 20px;
+  min-height: 100vh;
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.13);
 }
 
 .scorepage-title {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.scorepage-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr;
+  gap: 4rem;
+  margin-bottom: 3rem;
 }
 
 .chart-section {
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  margin: 20px 0;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.error-message, .no-data-message {
-  color: #e74c3c;
-  text-align: center;
+.chart-section h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.chart-container {
+  height: 300px;
+  width: 100%;
 }
 
 .scores-table {
-  margin-top: 20px;
+  grid-column: 1 / -1;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scores-table .MuiTableContainer-root {
+  border-radius: 8px;
+}
+
+.scores-table .MuiTable-root {
+  min-width: 650px;
+}
+
+.scores-table .MuiTableHead-root {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+.scores-table .MuiTableHead-root .MuiTableCell-root {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.scores-table .MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: #f8fafc;
+}
+
+.error-message {
+  color: #e53e3e;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.no-data-message {
+  color: #4a5568;
+  text-align: center;
+  margin: 2rem 0;
 }
 
 .question-details {
@@ -43,4 +99,21 @@
 
 .incorrect {
   color: red;
+}
+
+@media (max-width: 1400px) {
+  .scorepage-container {
+    padding: 24px 16px;
+    max-width: 98vw;
+  }
+  .scorepage-content {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .scorepage-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
